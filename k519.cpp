@@ -5,42 +5,41 @@ using namespace std;
 #define endl "\n"
 
 int n;
-int arr[15][15];
+long long arr[15][15] = {};
 int alfa, bravo;
-int ans = INT_MAX;
 
-void dfs(int a, int b, int vis[], int tmp){
-    
-    cout << "dfs:" << a << ',' << b << endl;
-    cout << "tmp:" << tmp << endl;
-    cout << "ans:" << ans << endl;
-    
-    if(a == b) return;
-    tmp += arr[a][b];
-    if(b == bravo){
-        if(tmp < ans) ans = tmp;
-        return;
+void Floyd(){
+    for(int k = 1; k<=n; k++){
+        for(int i = 1; i<=n; i++){
+            for(int j = 1; j<=n; j++){
+                arr[i][j] = min(arr[i][j], arr[i][k]+arr[k][j]);
+                /*
+                cout << "====================" << endl;
+                for(int x = 1; x<=n; x++){
+                    for(int y = 1; y<=n; y++){
+                        cout << arr[x][y] << " \n"[y==n];
+                    }
+                }
+                */
+            }
+        }
     }
-    for(int i = 1; i<=n; i++){
-        if(vis[i]) continue;
-        vis[i]++;
-        dfs(b,i,vis,tmp);
-    }
+
 }
-
 int main(){
     cin >> n;
     for(int i = 1; i<=n; i++){
-        for(int j = 1; j<=n; j++) cin >> arr[i][j];
+        for(int j = 1; j<=n; j++){
+            int tmp;
+            cin >> tmp;
+            if(tmp == -1) arr[i][j] = 1e9;
+            else arr[i][j] = tmp;
+        }
     }
+
     cin >> alfa >> bravo;
-    for(int i = 1; i<=n; i++){
-        int vis[15];
-        vis[alfa] = 1;
-        int tmp = 0;
-        dfs(alfa,i,vis,tmp);
-    }
-    cout << ans << endl;
+    Floyd();
+    cout << arr[alfa][bravo] << endl;
     return 0;
 }
 
