@@ -7,12 +7,16 @@ using namespace std;
 int n;
 long long arr[15][15] = {};
 int alfa, bravo;
+long long vis[15][15] = {};
 
 void Floyd(){
     for(int k = 1; k<=n; k++){
         for(int i = 1; i<=n; i++){
             for(int j = 1; j<=n; j++){
-                arr[i][j] = min(arr[i][j], arr[i][k]+arr[k][j]);
+                if(arr[i][j] > arr[i][k]+arr[k][j]){
+                    arr[i][j] = arr[i][k]+arr[k][j];
+                    vis[i][j] = vis[i][k] + vis[k][j];
+                }
                 /*
                 cout << "====================" << endl;
                 for(int x = 1; x<=n; x++){
@@ -36,10 +40,19 @@ int main(){
             else arr[i][j] = tmp;
         }
     }
-
+    for(int i = 1; i<=n; i++){
+        for(int j = 1; j<=n; j++){
+            vis[i][j] = 1;
+        }
+    }
     cin >> alfa >> bravo;
     Floyd();
-    cout << arr[alfa][bravo] << endl;
+    
+    for(int i = 1; i<=n; i++){
+        for(int j = 1; j<=n; j++) cout << vis[i][j] << " \n"[j==n];
+    }
+    
+    cout << arr[alfa][bravo] - (vis[alfa][bravo]-1)*50 << endl;
     return 0;
 }
 
