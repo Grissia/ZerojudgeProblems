@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 #define endl "\n"
 
@@ -13,9 +11,9 @@ void Floyd(){
     for(int k = 1; k<=n; k++){
         for(int i = 1; i<=n; i++){
             for(int j = 1; j<=n; j++){
-                if(arr[i][j] > arr[i][k]+arr[k][j]){
+                if(arr[k][j] != INT_MAX && arr[i][k] != INT_MAX && arr[i][j] > arr[i][k]+arr[k][j] && arr[i][k] + arr[k][j] > 0){
                     arr[i][j] = arr[i][k]+arr[k][j];
-                    vis[i][j] = vis[i][k] + vis[k][j];
+                    vis[i][j] = (vis[i][k] + vis[k][j]) + 1;
                 }
                 /*
                 cout << "====================" << endl;
@@ -36,23 +34,22 @@ int main(){
         for(int j = 1; j<=n; j++){
             int tmp;
             cin >> tmp;
-            if(tmp == -1) arr[i][j] = 1e9;
+            if(tmp == -1){
+                arr[i][j] = INT_MAX;
+                vis[i][j] = INT_MAX;
+            }
             else arr[i][j] = tmp;
         }
     }
-    for(int i = 1; i<=n; i++){
-        for(int j = 1; j<=n; j++){
-            vis[i][j] = 1;
-        }
-    }
+
     cin >> alfa >> bravo;
     Floyd();
-    
+    /*
     for(int i = 1; i<=n; i++){
         for(int j = 1; j<=n; j++) cout << vis[i][j] << " \n"[j==n];
     }
-    
-    cout << arr[alfa][bravo] - (vis[alfa][bravo]-1)*50 << endl;
+    */
+    cout << arr[alfa][bravo] - (vis[alfa][bravo])*50 << endl;
     return 0;
 }
 
